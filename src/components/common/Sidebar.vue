@@ -14,8 +14,15 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"></i>
-                            <span slot="title">{{ item.title }}</span>
+                            <div>
+                                <i
+                                    :class="item.icons"
+                                    class="ionic"
+                                    style="float:left;margin-right: 10px;"
+                                ></i>
+                                <span slot="title" style="float:left">{{ item.title }}</span>
+                                <i :class="item.icon" class="ionic" style="float:right"></i>
+                            </div>
                         </template>
                         <template v-for="subItem in item.subs">
                             <el-submenu
@@ -55,66 +62,12 @@ import { getAuthUserDetai } from '@/api/draw';
 export default {
     data() {
         return {
-            collapse: false,
-            // items: [
-            //     {
-            //         icon: 'el-icon-rank',
-            //         index: '1',
-            //         title: '数据统计',
-            //         subs: [
-            //             {
-            //                 index: 'layoutData',
-            //                 title: '布局数据'
-            //             },
-            //             {
-            //                 index: 'useSituation',
-            //                 title: '使用情况'
-            //             },
-            //             {
-            //                 index: 'useDetails',
-            //                 title: '使用明细'
-            //             },
-            //             {
-            //                 index: 'accessDetails',
-            //                 title: '访问明细'
-            //             },
-            //             {
-            //                 index: 'communityRanking',
-            //                 title: '社区使用排行'
-            //             },
-            //             {
-            //                 index: 'appRanking',
-            //                 title: '应用使用排行'
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         icon: 'el-icon-lx-calendar',
-            //         index: '2',
-            //         title: '应用管理',
-            //         subs: [
-            //             {
-            //                 index: 'releaseApp',
-            //                 title: '升级管理'
-            //             },
-            //             {
-            //                 index: 'application',
-            //                 title: '应用'
-            //             },
-            //             {
-            //                 index: 'property',
-            //                 title: '物业应用'
-            //             },
-            //             {
-            //                 index: 'horizon',
-            //                 title: '视界'
-            //             }
-            //         ]
-            //     }
-            // ]
+            isShowList: true,
+            collapse: true,
             items: [
                 {
-                    icon: 'el-icon-rank',
+                    icons: 'el-icon-bank-card',
+                    icon: 'el-icon-arrow-down',
                     index: '1',
                     title: '数智面板',
                     subs: [
@@ -139,9 +92,46 @@ export default {
                             title: '用户热衰图'
                         }
                     ]
+                },
+                {
+                    icons: 'el-icon-takeaway-box',
+                    icon: 'el-icon-arrow-down',
+                    index: '2',
+                    title: '应用管理',
+                    subs: [
+                        {
+                            index: 'releaseApp',
+                            title: '升级管理'
+                        },
+                        {
+                            index: 'application',
+                            title: '应用'
+                        },
+                        {
+                            index: 'property',
+                            title: '物业应用'
+                        },
+                        {
+                            index: 'horizon',
+                            title: '视界'
+                        }
+                    ]
                 }
             ]
         };
+    },
+    methods: {
+        // outStyle() {
+        //     this.isShowList = true;
+        //     console.log(val);
+        // },
+        // show(val) {
+        //     this.isShowList = false;
+        //     console.log(val);
+        // },
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        }
     },
     computed: {
         onRoutes() {
@@ -157,16 +147,6 @@ export default {
                 appDevice: { qdDevice: 'Chrome', qdPlatform: 'Win32', qdVersion: '1.0.0' }
             })
         );
-        // getAuthUserDetai(formData).then(res => {
-        //     if (res.code == 200) {
-        //         if (res.data.pList.length > 0) {
-        //             this.items[1].subs.splice(1, 1);
-        //         } else {
-        //             this.items[1].subs.splice(2, 1);
-        //         }
-        //     }
-        // });
-        // 通过 Event Bus 进行组件间通信，来折叠侧边栏
         bus.$on('collapse', msg => {
             this.collapse = msg;
             bus.$emit('collapse-content', msg);
@@ -199,5 +179,71 @@ export default {
 li.el-menu-item {
     background: #f5f3fb;
     font-size: 14px;
+}
+.el-menu--collapse {
+    width: 220px;
+}
+</style>
+<style >
+.el-menu--collapse > .el-menu-item span,
+.el-menu--collapse > .el-submenu > .el-submenu__title span {
+    overflow: static;
+    visibility: static;
+}
+li.el-submenu.is-opened,
+.el-submenu__title:hover,
+li.el-menu-item[data-v-68d67528],
+ul.el-menu.el-menu--popup.el-menu--popup-right-start,
+.el-menu--vertical {
+    background: #0083feff;
+    color: rgba(255, 255, 255, 0.87) !important;
+}
+li.el-menu-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 48px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.87) !important;
+    line-height: 48px !important;
+}
+li.el-menu-item.is-active {
+    color: rgba(255, 255, 255, 0.87) !important;
+}
+.el-submenu__title {
+    height: 48px;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    line-height: 48px;
+}
+.el-menu--popup {
+    padding: 0;
+}
+.el-menu--collapse > .el-menu-item span,
+.el-menu--collapse > .el-submenu > .el-submenu__title span {
+    visibility: visible;
+    overflow: visible;
+    height: 48px;
+}
+li.el-submenu.is-opened .el-submenu__title {
+    color: rgba(255, 255, 255, 0.87) !important;
+}
+.sidebar[data-v-68d67528],
+.el-menu {
+    background: #f5f3fb;
+    border-left: none;
+}
+.el-menu--popup-right-start {
+    padding: 0;
+}
+[class*=' el-icon-'],
+[class^='el-icon-'] {
+    line-height: 3;
+}
+li.el-submenu.is-opened .ionic {
+    color: #fff;
+}
+li.el-submenu.is-opened .el-icon-arrow-down {
+    transform: rotate(270deg);
 }
 </style>
